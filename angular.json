@@ -1,0 +1,139 @@
+{
+  "version": 1,
+  "projects": {
+    "modus-documentation": {
+      "projectType": "application",
+      "schematics": {
+        "@nrwl/angular:component": {
+          "style": "scss"
+        }
+      },
+      "root": "apps/modus-documentation",
+      "sourceRoot": "apps/modus-documentation/src",
+      "prefix": "modus",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/apps/modus-documentation",
+            "index": "apps/modus-documentation/src/index.html",
+            "main": "apps/modus-documentation/src/main.ts",
+            "polyfills": "apps/modus-documentation/src/polyfills.ts",
+            "tsConfig": "apps/modus-documentation/tsconfig.app.json",
+            "aot": false,
+            "assets": [
+              "apps/modus-documentation/src/favicon.ico",
+              "apps/modus-documentation/src/assets"
+            ],
+            "styles": ["apps/modus-documentation/src/styles.scss"],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "apps/modus-documentation/src/environments/environment.ts",
+                  "with": "apps/modus-documentation/src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "modus-documentation:build"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "modus-documentation:build:production"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "modus-documentation:build"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "apps/modus-documentation/tsconfig.app.json",
+              "apps/modus-documentation/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**", "!apps/modus-documentation/**"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "apps/modus-documentation/jest.config.js",
+            "tsConfig": "apps/modus-documentation/tsconfig.spec.json",
+            "setupFile": "apps/modus-documentation/src/test-setup.ts"
+          }
+        }
+      }
+    },
+    "modus-documentation-e2e": {
+      "root": "apps/modus-documentation-e2e",
+      "sourceRoot": "apps/modus-documentation-e2e/src",
+      "projectType": "application",
+      "architect": {
+        "e2e": {
+          "builder": "@nrwl/cypress:cypress",
+          "options": {
+            "cypressConfig": "apps/modus-documentation-e2e/cypress.json",
+            "tsConfig": "apps/modus-documentation-e2e/tsconfig.e2e.json",
+            "devServerTarget": "modus-documentation:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "modus-documentation:serve:production"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": ["apps/modus-documentation-e2e/tsconfig.e2e.json"],
+            "exclude": [
+              "**/node_modules/**",
+              "!apps/modus-documentation-e2e/**"
+            ]
+          }
+        }
+      }
+    }
+  },
+  "cli": {
+    "defaultCollection": "@nrwl/angular"
+  },
+  "schematics": {
+    "@nrwl/angular:application": {
+      "unitTestRunner": "jest",
+      "e2eTestRunner": "cypress"
+    },
+    "@nrwl/angular:library": {
+      "unitTestRunner": "jest"
+    }
+  },
+  "defaultProject": "modus-documentation"
+}
